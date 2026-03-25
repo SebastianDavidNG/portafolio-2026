@@ -1,31 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { Moon, Sun } from 'lucide-react';
 
-export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(true);
+/** Reads saved / system preference only — no DOM access (safe anywhere). */
+function readThemePreference(): boolean {
+  if (typeof window === 'undefined') return false;
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
+}
 
-  useEffect(() => {
-    // Check system preference or localStorage
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
+export function ThemeToggle() {
+  const [isDark, setIsDark] = useState(false);
+  const isFirstLayout = useRef(true);
+
+  useLayoutEffect(() => {
+    if (isFirstLayout.current) {
+      isFirstLayout.current = false;
+      const dark = readThemePreference();
+      setIsDark(dark);
+      document.documentElement.classList.toggle('dark', dark);
+      return;
     }
-  }, []);
+    document.documentElement.classList.toggle('dark', isDark);
+  }, [isDark]);
 
   const toggleTheme = () => {
     if (isDark) {
-      document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
       setIsDark(false);
     } else {
-      document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
       setIsDark(true);
     }

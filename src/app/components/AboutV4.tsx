@@ -58,19 +58,20 @@ export function AboutV4() {
               </h2>
               <div className="space-y-4 text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                 <p>
-                  I'm a passionate full stack developer with over 12 years of experience 
-                  creating exceptional web experiences. My approach combines elegant design 
-                  with robust and scalable code.
+                  I started as a graphic designer and publisher, then focused on web development
+                  and front-end engineering. For more than a decade I have shipped sites and
+                  products that balance clear UI, solid code, and measurable outcomes.
                 </p>
                 <p>
-                  Specialized in React, TypeScript, Node.js, and UI/UX design, I'm dedicated to 
-                  building digital products that not only look great but work perfectly and 
-                  solve real problems.
+                  Day to day I work with React, TypeScript, and Tailwind CSS, and I regularly
+                  deliver WordPress and Drupal builds, Astro and Vue landing pages, and
+                  animation-heavy experiences with GSAP. I care about technical SEO, Core Web
+                  Vitals, and Lighthouse-friendly performance — from Figma handoff to production.
                 </p>
                 <p>
-                  I'm passionate about continuous learning and staying up-to-date with the latest 
-                  trends in web development. I believe in clean code, best practices, 
-                  and creating experiences that users love.
+                  I value clean architecture, accessibility, and maintainable code. Whether it is
+                  a marketing site, a CMS theme, or a component library, I aim for work that teams
+                  can extend with confidence.
                 </p>
               </div>
             </motion.div>

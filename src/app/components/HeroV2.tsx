@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Download, Sparkles } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { CV_DOWNLOAD_AS, CV_PDF_URL } from '@/app/site';
 
 export function HeroV2() {
   const scrollToSection = (id: string) => {
@@ -126,13 +127,20 @@ export function HeroV2() {
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
+                asChild
                 size="lg"
                 variant="outline"
-                onClick={() => window.open('#', '_blank')}
                 className="border-gray-300 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-400 px-8"
               >
-                <Download className="mr-2 w-4 h-4" />
-                Descargar CV
+                <a
+                  href={CV_PDF_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download={CV_DOWNLOAD_AS}
+                >
+                  <Download className="mr-2 w-4 h-4" />
+                  Descargar CV
+                </a>
               </Button>
             </motion.div>
 

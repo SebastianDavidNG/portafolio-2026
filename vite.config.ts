@@ -16,4 +16,23 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    target: 'es2020',
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            return 'react-vendor';
+          }
+          if (id.includes('node_modules/motion')) {
+            return 'motion-vendor';
+          }
+          if (id.includes('node_modules/@radix-ui')) {
+            return 'radix-vendor';
+          }
+        },
+      },
+    },
+  },
 })

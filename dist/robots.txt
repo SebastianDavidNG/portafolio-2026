@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Production: https://sebastiandng.com (match VITE_SITE_URL in CI/hosting)
+Sitemap: https://sebastiandng.com/sitemap.xml

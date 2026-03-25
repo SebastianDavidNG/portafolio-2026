@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Github, Linkedin, Mail, Download } from 'lucide-react';
+import { CV_DOWNLOAD_AS, CV_PDF_URL } from '@/app/site';
 
 export function HeroV4() {
   const scrollToSection = (id: string) => {
@@ -94,15 +95,18 @@ export function HeroV4() {
               View My Work
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
-            <motion.button
-              onClick={() => window.open('#', '_blank')}
+            <motion.a
+              href={CV_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              download={CV_DOWNLOAD_AS}
               className="px-8 py-4 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-full font-medium hover:border-gray-900 dark:hover:border-white transition-all duration-300 flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Download className="w-5 h-5" />
               Download CV
-            </motion.button>
+            </motion.a>
           </motion.div>
 
           {/* Social Links */}

@@ -1,28 +1,48 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Github, Linkedin, Mail, Download, Code2, Sparkles } from 'lucide-react';
+import { useSyncExternalStore } from 'react';
 import { MatrixBackground } from './MatrixBackground';
-import { useEffect, useState } from 'react';
+import { CV_DOWNLOAD_AS, CV_PDF_URL } from '@/app/site';
 
-export function HeroV5() {
-  const [isDark, setIsDark] = useState(false);
+const darkModeListeners = new Set<() => void>();
+let darkModeObserver: MutationObserver | null = null;
 
-  useEffect(() => {
-    // Check if dark mode is active
-    const checkDarkMode = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
-    };
+function notifyDarkModeListeners() {
+  darkModeListeners.forEach((listener) => listener());
+}
 
-    checkDarkMode();
-    
-    // Watch for theme changes
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, {
+function subscribeDarkMode(onStoreChange: () => void) {
+  darkModeListeners.add(onStoreChange);
+  if (!darkModeObserver) {
+    darkModeObserver = new MutationObserver(notifyDarkModeListeners);
+    darkModeObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class'],
     });
+  }
+  return () => {
+    darkModeListeners.delete(onStoreChange);
+    if (darkModeListeners.size === 0 && darkModeObserver) {
+      darkModeObserver.disconnect();
+      darkModeObserver = null;
+    }
+  };
+}
 
-    return () => observer.disconnect();
-  }, []);
+function getDarkModeSnapshot() {
+  return document.documentElement.classList.contains('dark');
+}
+
+function getServerDarkModeSnapshot() {
+  return false;
+}
+
+export function HeroV5() {
+  const isDark = useSyncExternalStore(
+    subscribeDarkMode,
+    getDarkModeSnapshot,
+    getServerDarkModeSnapshot,
+  );
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -131,6 +151,10 @@ export function HeroV5() {
                 .
               </motion.span>
             </div>
+            <span className="sr-only">
+              Front-end developer and web developer — React, TypeScript, WordPress, Drupal, Astro,
+              Vue, Tailwind CSS, technical SEO, portfolio at sebastiandng.com
+            </span>
           </motion.h1>
 
           {/* Subtitle with typing effect style */}
@@ -197,15 +221,18 @@ export function HeroV5() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </motion.button>
-            <motion.button
-              onClick={() => window.open('#', '_blank')}
+            <motion.a
+              href={CV_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              download={CV_DOWNLOAD_AS}
               className="group px-8 py-4 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-full font-medium hover:border-[#00ff88] dark:hover:border-[#00ff88] hover:text-[#00ff88] transition-all duration-300 flex items-center gap-2 backdrop-blur-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Download className="w-5 h-5" />
               Download CV
-            </motion.button>
+            </motion.a>
           </motion.div>
 
           {/* Social Links */}
